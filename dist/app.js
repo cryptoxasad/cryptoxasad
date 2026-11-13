@@ -452,7 +452,8 @@ function tuneStation(idx) {
 
 function toggleRadioPlayback() {
   initRadioAudio();
-  const roomAudio = getServerAudio(activeServerId);
+  const station = RADIO_STATIONS[activeStationIdx] || RADIO_STATIONS[0];
+  const server = serversList.find(s => s.id === activeServerId) || serversList[0];
 
   // Force unmute when user clicks play button!
   if (isAudioMuted) {
@@ -462,61 +463,44 @@ function toggleRadioPlayback() {
       radioAudio.muted = false;
       radioAudio.volume = Math.max(0.75, (currentVolume || 80) / 100);
     }
-    duckYouTubeIframe(currentVolume || 80);
     updateAudioUI();
   }
 
   if (isRadioPlaying) {
     if (radioAudio) radioAudio.pause();
-    if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
-      try { ytPlayer.pauseVideo(); } catch (_) {}
-    }
-    duckYouTubeIframe(0);
-    const ytIframe = document.getElementById('yt-stage-iframe');
-    if (ytIframe) {
-      try { ytIframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*'); } catch (_) {}
-    }
     isRadioPlaying = false;
-    roomAudio.isPlaying = false;
     updateRadioPlayUI();
-    showToast('⏸️ Room audio paused');
+    showToast('⏸️ Radio playback paused');
   } else {
-    roomAudio.isPlaying = true;
-    if (roomAudio.ytId) {
-      mountMediaEmbed(roomAudio.ytId, null, roomAudio.title);
+    // Hide DJ embed if returning to standard radio
+    const embedContainer = document.getElementById('dj-embed-player-container');
+    const embedSlot = document.getElementById('dj-embed-player-slot');
+    if (embedContainer) embedContainer.style.display = 'none';
+    if (embedSlot) embedSlot.innerHTML = '';
+
+    radioAudio.src = station.streamUrl;
+    radioAudio.muted = false;
+    radioAudio.volume = isMicOn ? Math.max(0.04, (currentVolume / 100) * 0.15) : Math.max(0.75, (currentVolume || 80) / 100);
+    radioAudio.play().then(() => {
       isRadioPlaying = true;
       updateRadioPlayUI();
-      showToast('🎶 YouTube Audio stream playing in room');
-    } else if (roomAudio.soundCloudUrl) {
-      mountMediaEmbed(null, roomAudio.soundCloudUrl, roomAudio.title);
-      isRadioPlaying = true;
-      updateRadioPlayUI();
-      showToast('🎶 SoundCloud stream playing in room');
-    } else {
-      radioAudio.src = roomAudio.streamUrl || RADIO_STATIONS[0].streamUrl;
-      radioAudio.muted = false;
-      radioAudio.volume = isMicOn ? Math.max(0.04, (currentVolume / 100) * 0.15) : Math.max(0.75, (currentVolume || 80) / 100);
-      radioAudio.play().then(() => {
-        isRadioPlaying = true;
-        updateRadioPlayUI();
-        showToast('🎶 Room audio playing: ' + (roomAudio.title || 'Vice FM'));
-      }).catch(err => {
-        console.warn('Autoplay restricted or stream failed:', err);
-        // Fallback to station 0 stream if custom stream failed
-        if (roomAudio.streamUrl !== RADIO_STATIONS[0].streamUrl) {
-          radioAudio.src = RADIO_STATIONS[0].streamUrl;
-          radioAudio.play().then(() => {
-            isRadioPlaying = true;
-            updateRadioPlayUI();
-            showToast('🎶 Playing fallback: ' + RADIO_STATIONS[0].name);
-          }).catch(() => {
-            showToast('⚠️ Click play to enable radio sound');
-          });
-        } else {
-          showToast('⚠️ Click play to enable radio sound');
-        }
-      });
-    }
+      showToast('📻 Tuned #' + server.name + ' to ' + station.freq + ' ' + station.name);
+    }).catch(err => {
+      console.warn('Radio playback error:', err);
+      // Try fallback to station 0 if current station stream had issue
+      if (station.streamUrl !== RADIO_STATIONS[0].streamUrl) {
+        radioAudio.src = RADIO_STATIONS[0].streamUrl;
+        radioAudio.play().then(() => {
+          isRadioPlaying = true;
+          updateRadioPlayUI();
+          showToast('📻 Playing fallback: ' + RADIO_STATIONS[0].name);
+        }).catch(() => {
+          showToast('⚠️ Click anywhere on stage to enable radio sound');
+        });
+      } else {
+        showToast('⚠️ Click anywhere on stage to enable radio sound');
+      }
+    });
   }
 }
 window.toggleRadioPlayback = toggleRadioPlayback;
@@ -1033,42 +1017,42 @@ const DJ_SOUND_PRESETS = [
   {
     id: 'kavinsky',
     title: 'Kavinsky - Nightcall (Drive Synthwave)',
-    ytId: 'MV_3Dpw-BRY',
+    scUrl: 'https://soundcloud.com/deadcruiser/nightcall',
     streamUrl: 'https://stream.nightride.fm/chillsynth.mp3',
     icon: '🚗'
   },
   {
     id: 'miami-nights',
-    title: 'Miami Nights 1984 - Accelerated',
-    ytId: 'rDBbaGCCIhk',
+    title: 'Miami Nights 1984 - Ocean Drive',
+    scUrl: 'https://soundcloud.com/miami-nights-1984/ocean-drive',
     streamUrl: 'https://stream.nightride.fm/datawave.mp3',
     icon: '🌴'
   },
   {
     id: 'scarface',
     title: 'Scarface - Push It To The Limit (Vice 80s Club)',
-    ytId: 'vT8OU5WtfMQ',
+    scUrl: 'https://soundcloud.com/user-537443831/paul-engemann-push-it-to-the',
     streamUrl: 'https://stream.nightride.fm/synthwave.mp3',
     icon: '🔥'
   },
   {
     id: 'vice-city',
-    title: 'GTA Vice City Official Theme & Turbo',
-    ytId: 'yP0_t_z8sZc',
+    title: 'GTA Vice City Official Theme & Radio Mix',
+    scUrl: 'https://soundcloud.com/gta-soundtracks/gta-vice-city-theme',
     streamUrl: 'https://stream.nightride.fm/nightride.mp3',
     icon: '🔫'
   },
   {
     id: 'mj-groove',
-    title: 'Michael Jackson - Billie Jean & Fever Funk',
-    ytId: 'Zi_XLOBDo_Y',
+    title: 'Michael Jackson - Billie Jean (Club Edit)',
+    scUrl: 'https://soundcloud.com/michael-jackson-official/billie-jean',
     streamUrl: 'https://stream.nightride.fm/horrorsynth.mp3',
     icon: '🕺'
   },
   {
     id: 'weeknd',
-    title: 'The Weeknd - Blinding Lights (Cyber Electro)',
-    ytId: '4NRXx6U8ABQ',
+    title: 'The Weeknd - Blinding Lights (Synthwave Remix)',
+    scUrl: 'https://soundcloud.com/theweeknd/blinding-lights',
     streamUrl: 'https://stream.nightride.fm/ebm.mp3',
     icon: '⚡'
   }
@@ -1127,8 +1111,8 @@ window.playDirectAudioStream = (streamUrl, title) => {
 window.playPresetAudio = (presetId) => {
   const preset = DJ_SOUND_PRESETS.find(p => p.id === presetId);
   if (preset) {
-    if (preset.ytId) {
-      window.playDirectAudioStream('https://www.youtube.com/watch?v=' + preset.ytId, preset.title);
+    if (preset.scUrl) {
+      window.playDirectAudioStream(preset.scUrl, preset.title);
     } else {
       window.playDirectAudioStream(preset.streamUrl, preset.title);
     }
