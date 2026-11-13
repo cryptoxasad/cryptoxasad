@@ -451,6 +451,10 @@ function tuneStation(idx) {
 }
 
 function toggleRadioPlayback() {
+  if (isMicOn) {
+    showToast('🎙️ Radio locked while Stage Mic is LIVE! RJ has the floor.');
+    return;
+  }
   initRadioAudio();
   const station = RADIO_STATIONS[activeStationIdx] || RADIO_STATIONS[0];
   const server = serversList.find(s => s.id === activeServerId) || serversList[0];
@@ -1240,13 +1244,14 @@ async function toggleRoomMicrophone() {
       onAirPill.innerHTML = '<span class="status-dot"></span> OFF AIR';
     }
 
-    // RESTORE FULL MUSIC VOLUME WHEN RJ STEPS DOWN!
-    if (radioAudio && !isAudioMuted) {
+    // RESTORE RADIO WHEN RJ STEPS DOWN (MUTUAL EXCLUSION RELEASE)
+    if (radioAudio && isRadioPlaying && !isAudioMuted) {
       radioAudio.volume = (currentVolume || 80) / 100;
+      radioAudio.play().catch(() => {});
     }
     duckYouTubeIframe(currentVolume || 80);
 
-    showToast('🎙️ Stepped down from stage mic. Music restored to full volume.');
+    showToast('🎙️ Stepped down from stage mic. Radio stream resumed.');
     sendSystemNotice('🎙️ RJ @' + currentUser.name + ' finished their stage broadcast.');
     return;
   }
@@ -1279,13 +1284,15 @@ async function toggleRoomMicrophone() {
         onAirPill.innerHTML = '<span class="status-dot"></span> 🎙️ ON AIR (LIVE RJ)';
       }
 
-      // PROFESSIONAL RADIO AUTO-DUCKING: Music drops to 15% volume so RJ voice dominates!
+      // STRICT MUTUAL EXCLUSION: When mic is active, RADIO IS 100% MUTED & PAUSED!
+      // No background music overlap so the RJ's voice is crystal clear!
       if (radioAudio) {
-        radioAudio.volume = Math.max(0.04, (currentVolume / 100) * 0.15);
+        radioAudio.pause();
+        radioAudio.volume = 0;
       }
-      duckYouTubeIframe(Math.round(Math.max(5, currentVolume * 0.15)));
+      duckYouTubeIframe(0);
 
-      showToast('🎙️ LIVE ON AIR! Speaking over music with auto-ducking.');
+      showToast('🎙️ LIVE ON AIR! Radio stream paused automatically for RJ broadcast.');
       const currentRjDisplay = document.getElementById('room-current-rj-lbl');
       if (currentRjDisplay) currentRjDisplay.textContent = '@' + currentUser.name + ' (LIVE RJ)';
 

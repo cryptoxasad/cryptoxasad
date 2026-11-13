@@ -1,24 +1,24 @@
 export const TOKEN_CONFIG = {
-  name: 'VICE SYNDICATE',
-  ticker: '$SYND',
+  name: 'VICE HEIST',
+  ticker: '$HEIST',
   network: 'Solana (SPL Token)',
   totalSupply: '1,000,000,000',
   status: 'pre-launch',
-  mintAddress: '',
+  mintAddress: '', // Strictly blank in pre-launch mode until live contract deployment
   links: {
-    pumpFun: 'https://pump.fun/',
-    raydium: '',
-    dexscreener: '',
-    solscan: '',
-    x: 'https://x.com/ViceSyndSol',
-    telegram: 'https://t.me/ViceSyndSol',
+    pumpFun: '', // Locked pre-launch
+    raydium: '', // Locked pre-launch
+    dexscreener: '', // Locked pre-launch
+    solscan: '', // Locked pre-launch
+    x: 'https://x.com/ViceHeistSol',
+    telegram: 'https://t.me/ViceHeistSol',
   },
   security: {
     mintAuthorityRevoked: true,
     freezeAuthorityRevoked: true,
     buyTax: '0%',
     sellTax: '0%',
-    liquidityStatus: '100% LP Burned / Locked at Raydium migration',
+    liquidityStatus: '100% LP Burned / Locked',
   },
-  utility: 'Fueling the 80s Miami Neon Underground Empire: Unlock Fire Aura & Diamond VIP names, deploy custom gaming servers, acquire live RJ broadcast passes, and tip performers on stage.',
+  utility: 'Empowering the Vice Heist ecosystem: Weekly Top-Scorer Tournament Prize Pools, 1.5x-2.5x Clip Bounty reward weight multipliers for viral stream edits, exclusive 3D Coupe & Blaster skins, and VIP Kingpin Lounge access.',
 };

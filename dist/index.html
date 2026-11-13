@@ -3,33 +3,39 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>VICE SYNDICATE ($SYND) — 80s Miami Neon Underground Empire &amp; Live RJ Network</title>
-  <meta name="description" content="The premier decentralized GTA Miami-inspired social gaming servers and live RJ concert network on Solana. Create custom servers with passcode security, broadcast live shows on the RJ deck, unlock fire &amp; diamond powers, and share live GIFs/photos.">
+  <title>VICE HEIST ($HEIST) — 80s Miami Neon-Noir Parody &amp; 3D Bayfront Shooter on Solana</title>
+  <meta name="description" content="VICE HEIST ($HEIST) on Solana. Playable 3D combat shooter Bayfront Takedown, interactive 3D sports coupe showcase, real-time Syndicate chatrooms, clip bounty rewards, and safe pre-launch token specs.">
   <meta name="theme-color" content="#060710">
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="VICE SYNDICATE ($SYND) — 80s Miami Neon Underground Empire">
-  <meta property="og:description" content="1 Billion $SYND on Solana. Deploy gaming servers, broadcast live RJ sets with stage mic, unlock fire aura &amp; diamond pawn powers, and chat with live GIFs.">
+  <meta property="og:title" content="VICE HEIST ($HEIST) — 80s Miami Neon-Noir Syndicate">
+  <meta property="og:description" content="1 Billion $HEIST on Solana. 3D Combat shooter, live syndicate chatrooms, clip bounties, and zero tax.">
   <meta property="og:image" content="/assets/vice_glamour_hero.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="VICE SYNDICATE ($SYND) — 80s Miami Neon Underground Empire">
-  <meta name="twitter:description" content="Deploy servers, broadcast live as an RJ, unlock fire aura &amp; diamond pawns with $SYND on Solana.">
+  <meta name="twitter:title" content="VICE HEIST ($HEIST) — 80s Miami Neon-Noir Syndicate">
+  <meta name="twitter:description" content="Playable 3D Combat shooter, interactive 3D sports coupe, syndicate chatroom, and clip bounties on Solana.">
   <meta name="twitter:image" content="/assets/vice_glamour_hero.jpg">
 
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/polish.css">
+
+  <!-- Local Standalone Three.js & Engine Modules -->
+  <script src="/three.min.js"></script>
+  <script src="/token-config.js"></script>
+  <script src="/hero-3d.js"></script>
+  <script src="/game-3d.js"></script>
 </head>
 <body>
 
   <!-- STICKY NAVBAR -->
   <header>
     <div class="navbar">
-      <a href="#hero" class="brand" aria-label="VICE SYNDICATE Home">
-        <img src="/logo.svg" alt="VICE SYNDICATE Emblem" class="brand-logo" width="42" height="42">
+      <a href="#hero" class="brand" aria-label="VICE HEIST Home">
+        <img src="/logo.svg" alt="VICE HEIST Emblem" class="brand-logo" width="42" height="42">
         <div class="brand-text">
-          <span class="brand-title">VICE<span>SYNDICATE</span></span>
-          <span class="brand-sub">$SYND • SOLANA SPL</span>
+          <span class="brand-title">VICE<span>HEIST</span></span>
+          <span class="brand-sub">$HEIST • SOLANA SPL</span>
         </div>
       </a>
 
@@ -47,13 +53,13 @@
       <button class="mobile-toggle" id="nav-toggle-btn" aria-label="Toggle navigation menu">☰</button>
 
       <nav class="nav-menu" id="nav-menu">
-        <button class="nav-link" data-scroll="servers-directory-section">🌐 Server Browser</button>
-        <button class="nav-link" data-scroll="vice-chat-section">💬 Live Server Chat</button>
-        <button class="nav-link" data-scroll="powers-shop-section">⚡ Chat Powers</button>
-        <button class="nav-link" data-scroll="token-specs">🪙 $SYND Token Specs</button>
-        <button class="nav-link" data-scroll="how-it-works">💡 How It Works</button>
+        <button class="nav-link" data-scroll="hero">🏎️ 3D Coupe</button>
+        <button class="nav-link" data-scroll="game-section">🎮 3D Shooter</button>
+        <button class="nav-link" data-scroll="chat-section">💬 Syndicate Chat</button>
+        <button class="nav-link" data-scroll="bounties-section">🎬 Clip Bounties</button>
+        <button class="nav-link" data-scroll="token-specs">🪙 $HEIST Specs</button>
         <a href="https://x.com/ViceSyndSol" target="_blank" rel="noopener" class="nav-link">𝕏 Twitter</a>
-        <button class="btn btn-cyan btn-sm" onclick="window.openWalletModal()" id="nav-wallet-btn" style="font-weight:800;margin-left:4px;">🟣 Connect Wallet</button>
+        <button class="btn btn-cyan btn-sm" onclick="window.openVerifyTierModal()" id="nav-verify-btn" style="font-weight:800;margin-left:4px;">🔍 Verify Holder Tier</button>
         <a href="https://pump.fun/" target="_blank" rel="noopener" class="btn btn-magenta btn-sm nav-cta">🔥 Pump.fun ↗</a>
       </nav>
     </div>
