@@ -325,7 +325,7 @@ function mountMediaEmbed(ytId, scUrl, title) {
   if (!embedSlot) return;
 
   if (ytId) {
-    embedSlot.innerHTML = '<iframe id="yt-stage-iframe" width="100%" height="240" src="https://www.youtube.com/embed/' + ytId + '?autoplay=1&enablejsapi=1&origin=' + encodeURIComponent(window.location.origin) + '" title="' + escHtml(title || 'YouTube Audio') + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:240px;border-radius:6px;border:none;box-shadow:0 0 15px rgba(0,240,255,0.4);"></iframe>';
+    embedSlot.innerHTML = '<iframe id="yt-stage-iframe" width="100%" height="240" src="https://www.youtube.com/embed/' + ytId + '?autoplay=1&enablejsapi=1" title="' + escHtml(title || 'YouTube Audio') + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:240px;border-radius:6px;border:none;box-shadow:0 0 15px rgba(0,240,255,0.4);"></iframe>';
     if (radioAudio) radioAudio.pause();
   } else if (scUrl) {
     embedSlot.innerHTML = '<iframe id="sc-stage-iframe" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=' + encodeURIComponent(scUrl) + '&color=%2300f0ff&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false" style="width:100%;height:166px;border-radius:6px;border:none;box-shadow:0 0 15px rgba(0,240,255,0.4);"></iframe>';
@@ -427,7 +427,20 @@ function tuneStation(idx) {
     try { ytPlayer.pauseVideo(); } catch (_) {}
   }
 
+  // Force unmute when tuning station
+  if (isAudioMuted) {
+    isAudioMuted = false;
+    localStorage.setItem('vh_audio_muted', 'false');
+    if (radioAudio) {
+      radioAudio.muted = false;
+      radioAudio.volume = Math.max(0.75, (currentVolume || 80) / 100);
+    }
+    updateAudioUI();
+  }
+
   radioAudio.src = station.streamUrl;
+  radioAudio.muted = false;
+  radioAudio.volume = Math.max(0.75, (currentVolume || 80) / 100);
   radioAudio.play().then(() => {
     isRadioPlaying = true;
     updateRadioPlayUI();
