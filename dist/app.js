@@ -290,8 +290,7 @@ window.setRoomVolume = (val) => SoundEngine.setVolume(val);
 function initRadioAudio() {
   if (!radioAudio) {
     radioAudio = new Audio();
-    radioAudio.crossOrigin = 'anonymous';
-    radioAudio.preload = 'none';
+    radioAudio.preload = 'auto';
     radioAudio.volume = isAudioMuted ? 0 : (isMicOn ? Math.max(0.05, (currentVolume / 100) * 0.15) : (currentVolume / 100));
     radioAudio.muted = isAudioMuted;
 
@@ -326,10 +325,10 @@ function mountMediaEmbed(ytId, scUrl, title) {
   if (!embedSlot) return;
 
   if (ytId) {
-    embedSlot.innerHTML = '<iframe id="yt-stage-iframe" width="100%" height="200" src="https://www.youtube-nocookie.com/embed/' + ytId + '?autoplay=1&enablejsapi=1" title="' + escHtml(title || 'YouTube Audio') + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:200px;border-radius:6px;border:none;box-shadow:0 0 10px rgba(0,240,255,0.3);"></iframe>';
+    embedSlot.innerHTML = '<iframe id="yt-stage-iframe" width="100%" height="240" src="https://www.youtube.com/embed/' + ytId + '?autoplay=1&enablejsapi=1&origin=' + encodeURIComponent(window.location.origin) + '" title="' + escHtml(title || 'YouTube Audio') + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:240px;border-radius:6px;border:none;box-shadow:0 0 15px rgba(0,240,255,0.4);"></iframe>';
     if (radioAudio) radioAudio.pause();
   } else if (scUrl) {
-    embedSlot.innerHTML = '<iframe id="sc-stage-iframe" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=' + encodeURIComponent(scUrl) + '&color=%2300f0ff&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false" style="width:100%;height:166px;border-radius:6px;border:none;"></iframe>';
+    embedSlot.innerHTML = '<iframe id="sc-stage-iframe" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=' + encodeURIComponent(scUrl) + '&color=%2300f0ff&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false" style="width:100%;height:166px;border-radius:6px;border:none;box-shadow:0 0 15px rgba(0,240,255,0.4);"></iframe>';
     if (radioAudio) radioAudio.pause();
   }
 }
@@ -1021,36 +1020,42 @@ const DJ_SOUND_PRESETS = [
   {
     id: 'kavinsky',
     title: 'Kavinsky - Nightcall (Drive Synthwave)',
+    ytId: 'MV_3Dpw-BRY',
     streamUrl: 'https://stream.nightride.fm/chillsynth.mp3',
     icon: '🚗'
   },
   {
     id: 'miami-nights',
     title: 'Miami Nights 1984 - Accelerated',
+    ytId: 'rDBbaGCCIhk',
     streamUrl: 'https://stream.nightride.fm/datawave.mp3',
     icon: '🌴'
   },
   {
     id: 'scarface',
     title: 'Scarface - Push It To The Limit (Vice 80s Club)',
+    ytId: 'vT8OU5WtfMQ',
     streamUrl: 'https://stream.nightride.fm/synthwave.mp3',
     icon: '🔥'
   },
   {
     id: 'vice-city',
     title: 'GTA Vice City Official Theme & Turbo',
+    ytId: 'yP0_t_z8sZc',
     streamUrl: 'https://stream.nightride.fm/nightride.mp3',
     icon: '🔫'
   },
   {
     id: 'mj-groove',
     title: 'Michael Jackson - Billie Jean & Fever Funk',
+    ytId: 'Zi_XLOBDo_Y',
     streamUrl: 'https://stream.nightride.fm/horrorsynth.mp3',
     icon: '🕺'
   },
   {
     id: 'weeknd',
     title: 'The Weeknd - Blinding Lights (Cyber Electro)',
+    ytId: '4NRXx6U8ABQ',
     streamUrl: 'https://stream.nightride.fm/ebm.mp3',
     icon: '⚡'
   }
@@ -1109,7 +1114,11 @@ window.playDirectAudioStream = (streamUrl, title) => {
 window.playPresetAudio = (presetId) => {
   const preset = DJ_SOUND_PRESETS.find(p => p.id === presetId);
   if (preset) {
-    window.playDirectAudioStream(preset.streamUrl, preset.title);
+    if (preset.ytId) {
+      window.playDirectAudioStream('https://www.youtube.com/watch?v=' + preset.ytId, preset.title);
+    } else {
+      window.playDirectAudioStream(preset.streamUrl, preset.title);
+    }
   }
 };
 
