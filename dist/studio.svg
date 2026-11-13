@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 560">
+<defs><linearGradient id="sky" x2=".8" y2="1"><stop stop-color="#183234"/><stop offset="1" stop-color="#111519"/></linearGradient><pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M0 36V0h36" fill="none" stroke="#a0e8ba" opacity=".11"/></pattern></defs>
+<rect width="840" height="560" rx="26" fill="url(#sky)"/><rect width="840" height="560" rx="26" fill="url(#grid)"/>
+<circle cx="640" cy="180" r="118" fill="#caff43" opacity=".08"/><circle cx="640" cy="180" r="77" fill="none" stroke="#caff43" opacity=".24"/>
+<path d="m0 440 179-78 111 34 163-114 195 76 192-64v266H0z" fill="#23372e"/>
+<g transform="translate(94 105) rotate(-5 292 173)"><rect width="584" height="346" rx="20" fill="#0e1414" stroke="#557267" stroke-width="2"/>
+<path d="M0 53h584" stroke="#3b4a42"/><circle cx="28" cy="26" r="5" fill="#caff43"/><circle cx="47" cy="26" r="5" fill="#789189"/>
+<text x="68" y="32" font-family="monospace" font-size="16" fill="#c4d4cb">CLIP BOUNTY / MOMENT REVIEW</text>
+<rect x="26" y="77" width="532" height="162" rx="12" fill="#253a35"/><path d="m26 220 132-84 77 52 112-75 211 102v24H26z" fill="#4d7464"/>
+<circle cx="292" cy="158" r="32" fill="#caff43"/><path d="m284 143 24 15-24 15z" fill="#162018"/>
+<rect x="26" y="264" width="532" height="42" rx="8" fill="#202928"/><path d="M54 284h45m16 0h49m16 0h79m18 0h72m18 0h60m17 0h80" stroke="#5d7c71" stroke-width="7" stroke-linecap="round"/>
+<path d="M319 253v68" stroke="#caff43" stroke-width="3"/><circle cx="319" cy="253" r="6" fill="#caff43"/></g>
+<g transform="translate(496 402)"><rect width="270" height="64" rx="12" fill="#caff43"/><text x="21" y="40" font-family="monospace" font-weight="bold" font-size="20" fill="#182010">01:12:34 / FOUND</text></g>
+</svg>
