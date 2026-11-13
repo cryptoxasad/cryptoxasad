@@ -49,7 +49,7 @@ export function app({ file = 'data/clip-bounty.sqlite', secure = false } = {}) {
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('Referrer-Policy', 'same-origin');
     res.setHeader('Cache-Control', 'no-store');
-    res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; media-src 'self' blob: data: https:; frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com https://player.twitch.tv; font-src 'self' data: https:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'");
+    res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; media-src 'self' blob: data: https:; frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com https://player.twitch.tv https://w.soundcloud.com https://soundcloud.com; font-src 'self' data: https:; connect-src 'self' https: blob:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'");
     
     const path = new URL(req.url, 'http://localhost').pathname;
     const send = (status, data) => {
